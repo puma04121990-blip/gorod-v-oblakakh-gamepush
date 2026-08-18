@@ -3,86 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#1a100c">
-  <meta name="description" content="Горн — самостоятельная HTML5 idle-кузница.">
-  <title>Горн</title>
+  <meta name="theme-color" content="#0b1410">
+  <meta name="description" content="Мицелий — самостоятельная HTML5 idle-игра. Никаких внешних ассетов.">
+  <title>Мицелий</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main class="wrap">
     <header class="top">
-      <div class="brand"><b>Горн</b><span>разожгите мастерскую</span></div>
-      <div class="chip" id="profile"><strong id="profileName">Локальная кузня</strong><small id="syncStatus">на устройстве</small></div>
+      <div class="brand">
+        <b>Мицелий</b>
+        <span>разрастите колонию</span>
+      </div>
+      <div class="chip" id="profile">
+        <strong id="profileName">Локальный слой</strong>
+        <small id="syncStatus">на устройстве</small>
+      </div>
       <button class="ico" id="soundBtn" type="button" aria-label="Звук">♪</button>
     </header>
-    <div class="notice" id="notice"></div>
+
+    <div class="notice" id="notice" role="status"></div>
+
     <div class="layout">
       <section>
         <div class="res">
-          <div><em style="color:var(--muted);font-size:12px">Искры</em><div class="spark" id="energy">0</div></div>
-          <p class="rate"><strong id="perSec">0</strong>искр в секунду</p>
-          <button class="btn" id="boostBtn" type="button">×2 жар за рекламу</button>
+          <div>
+            <em>Споры</em>
+            <div class="spark" id="energy">0</div>
+          </div>
+          <p class="rate"><strong id="perSec">0</strong>спор в секунду</p>
+          <button class="btn" id="boostBtn" type="button">×2 рост за рекламу</button>
         </div>
-        <div class="forge">
-          <div class="stage-name"><em id="stageNum">ГОРН 01</em><strong id="stageName">Холодный очаг</strong></div>
-          <button class="anvil" id="hit" type="button" aria-label="Ударить по наковальне"><i class="hearth"></i><i class="flame"></i><i class="hammer"></i></button>
+
+        <div class="grove" id="grove">
+          <div class="stage-name">
+            <em id="stageNum">СЛОЙ 01</em>
+            <strong id="stageName">Спора в мху</strong>
+          </div>
+          <i class="thread t1"></i><i class="thread t2"></i><i class="thread t3"></i>
+          <i class="thread t4"></i><i class="thread t5"></i><i class="thread t6"></i>
+          <i class="cap c1"></i><i class="cap c2"></i><i class="cap c3"></i>
+          <i class="spore s1"></i><i class="spore s2"></i><i class="spore s3"></i>
+          <button class="pulse" id="hit" type="button" aria-label="Пульс колонии">
+            <i class="core"></i>
+          </button>
         </div>
+
         <div class="goal">
-          <div><b id="goalTitle">Разожечь угли</b><div id="goalDesc" style="color:var(--muted);margin-top:4px">Накопите искры</div></div>
+          <div>
+            <b id="goalTitle">Первые гифы</b>
+            <div id="goalDesc">Накопите споры</div>
+          </div>
           <strong id="goalPct">0%</strong>
         </div>
+
         <article class="box" id="eventCard" hidden>
-          <b id="eventTitle">Ночная смена</b>
-          <span id="eventTimer" style="float:right;color:var(--gold)"></span>
-          <p id="eventDesc" style="color:var(--muted);margin-top:6px"></p>
+          <b id="eventTitle">Ночная роса</b>
+          <span id="eventTimer"></span>
+          <p id="eventDesc"></p>
         </article>
+
         <article class="box">
-          <b id="caravanTitle">Караван</b>
-          <span id="caravanTimer" style="float:right;color:var(--gold)">ДОСТУПНО</span>
-          <p id="caravanDesc" style="color:var(--muted);margin:8px 0">Отправьте повозку за рудой и клеймами.</p>
+          <b id="probeTitle">Нить разведки</b>
+          <span id="probeTimer">ДОСТУПНО</span>
+          <p id="probeDesc">Отправьте гифу за спорами и печатями.</p>
           <div id="routes"></div>
-          <div class="actions" style="margin-top:8px">
-            <button class="btn" id="caravanRush" hidden>Доставить сейчас</button>
-            <button class="btn" id="caravanClaim" hidden>Принять груз</button>
+          <div class="actions late">
+            <button class="btn" id="probeRush" hidden>Вернуть сейчас</button>
+            <button class="btn" id="probeClaim" hidden>Принять находку</button>
           </div>
         </article>
       </section>
+
       <section>
         <div class="tabs">
-          <button class="tab on" data-tab="shop">Горн</button>
-          <button class="tab" data-tab="lab">Закалка</button>
-          <button class="tab" data-tab="era">Новый сплав</button>
+          <button class="tab on" data-tab="shop">Колония</button>
+          <button class="tab" data-tab="lab">Печати</button>
+          <button class="tab" data-tab="era">Новый слой</button>
         </div>
-        <aside class="box" id="hint">Ударьте по наковальне — искра разожжёт очаг.</aside>
-        <article class="box" id="contractBox">
-          <b id="contractTitle">Первый жар</b>
-          <span id="contractReward" style="float:right;color:var(--ok)"></span>
-          <p id="contractProgress" style="color:var(--muted);margin-top:8px"></p>
+
+        <aside class="box" id="hint">Коснитесь шляпки — колония ответит пульсом.</aside>
+
+        <article class="box">
+          <b id="contractTitle">Первый всход</b>
+          <span id="contractReward"></span>
+          <p id="contractProgress"></p>
           <button class="btn" id="contractBtn" disabled>В работе</button>
         </article>
+
         <div id="shop"></div>
+
         <div id="lab" hidden>
-          <p class="box">Клейма тратятся на вечные приёмы ковки. Они остаются после нового сплава.</p>
+          <p class="box">Печати остаются после нового слоя и усиливают все будущие колонии.</p>
           <div id="research"></div>
         </div>
-        <div id="era" hidden class="box" style="text-align:center">
-          <h2>Новый сплав</h2>
-          <p>Сбросить текущую кузню и оставить множитель жара.</p>
+
+        <div id="era" hidden class="box center">
+          <h2>Новый слой</h2>
+          <p>Колония начнёт заново, постоянный коэффициент сохранится.</p>
           <p>Коэффициент: <b id="prestige">×1,00</b></p>
-          <p id="eraNeed">Нужно ещё 1,00 млн искр</p>
-          <button class="btn" id="prestigeBtn" disabled>Начать новый сплав</button>
+          <p id="eraNeed">Нужно ещё 1,00 млн спор</p>
+          <button class="btn" id="prestigeBtn" disabled>Открыть слой</button>
         </div>
+
         <div class="actions">
-          <button class="btn" id="grantBtn">Кузнечный заказ</button>
-          <button class="btn dim" id="resetBtn">Потушить горн</button>
+          <button class="btn" id="grantBtn">Роса с поверхности</button>
+          <button class="btn dim" id="resetBtn">Сжечь колонию</button>
         </div>
       </section>
     </div>
   </main>
-  <div class="modal" id="offlineModal"><div class="sheet"><h2>Пока вас не было</h2><p id="offlineText"></p><button class="btn dim" id="offlineOk">Забрать</button> <button class="btn" id="offlineDouble">Удвоить за рекламу</button></div></div>
-  <div class="modal" id="stageModal"><div class="sheet"><h2 id="stageModalTitle">Горн вырос</h2><p id="stageModalText"></p><button class="btn" id="stageOk">Дальше</button></div></div>
-  <div class="modal" id="eraModal"><div class="sheet"><h2>Начать новый сплав?</h2><p>Кузня обнулится, коэффициент станет <b id="newPrestige"></b>.</p><button class="btn dim" id="eraNo">Нет</button> <button class="btn" id="eraYes">Да</button></div></div>
+
+  <div class="modal" id="offlineModal">
+    <div class="sheet">
+      <h2>Пока вас не было</h2>
+      <p id="offlineText"></p>
+      <button class="btn dim" id="offlineOk">Забрать</button>
+      <button class="btn" id="offlineDouble">Удвоить за рекламу</button>
+    </div>
+  </div>
+  <div class="modal" id="stageModal">
+    <div class="sheet">
+      <h2 id="stageModalTitle">Слой вырос</h2>
+      <p id="stageModalText"></p>
+      <button class="btn" id="stageOk">Дальше</button>
+    </div>
+  </div>
+  <div class="modal" id="eraModal">
+    <div class="sheet">
+      <h2>Открыть новый слой?</h2>
+      <p>Текущая колония обнулится, коэффициент станет <b id="newPrestige"></b>.</p>
+      <button class="btn dim" id="eraNo">Нет</button>
+      <button class="btn" id="eraYes">Да</button>
+    </div>
+  </div>
+
   <script src="game.js"></script>
-  <!-- GAMEPUSH SDK: вставьте сюда загрузчик из кабинета. -->
+  <!-- GAMEPUSH SDK: вставьте загрузчик из кабинета (projectId + publicToken).
+       Игра автономна: нет шрифтов, картинок и файлов из других репозиториев. -->
 </body>
 </html>
